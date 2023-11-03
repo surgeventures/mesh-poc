@@ -6,3 +6,8 @@ services:
     environment:
       - PORT=3000
     command: bun start
+  appointments:
+    build: ./appointments
+    ports:
+      - "4000:4000"
+    command: npm run start:prod
