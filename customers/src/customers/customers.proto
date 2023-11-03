@@ -1,0 +1,17 @@
+// hero/hero.proto
+syntax = "proto3";
+
+package customers;
+
+service CustomersService {
+  rpc FindOne (CustomerById) returns (Customer) {}
+}
+
+message CustomerById {
+  int32 id = 1;
+}
+
+message Customer {
+  int32 id = 1;
+  string name = 2;
+}
