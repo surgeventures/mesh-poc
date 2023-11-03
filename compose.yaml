@@ -11,3 +11,8 @@ services:
     ports:
       - "4000:4000"
     command: npm run start:prod
+  customers:
+    build: ./customers
+    ports:
+      - "5000:5000"
+    command: npm run start:prod
