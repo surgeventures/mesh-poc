@@ -1,3 +1,5 @@
-FROM oven/bun:1.0.8
-COPY . .
-RUN bun install
+FROM node:18.17.1
+COPY package*.json .
+RUN npm install
+COPY tsconfig.json .
+COPY src ./src

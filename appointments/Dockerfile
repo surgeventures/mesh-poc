@@ -1,4 +1,7 @@
-FROM node:20.9.0
-COPY . .
+FROM node:18.17.1
+COPY package*.json .
 RUN npm install
+COPY tsconfig*.json .
+COPY nest-cli.json .
+COPY src ./src
 RUN npm run build

@@ -1,0 +1,20 @@
+{
+  "name": "gateway",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx mesh build --dir ./docker",
+    "start": "npx mesh start",
+    "dev": "npx mesh dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@graphql-mesh/cli": "^0.88.0",
+    "@graphql-mesh/graphql": "^0.96.0",
+    "@graphql-mesh/grpc": "^0.97.0",
+    "@graphql-mesh/openapi": "^0.96.0",
+    "graphql": "^16.8.1"
+  }
+}
