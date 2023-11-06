@@ -1,18 +1,18 @@
 services:
-  sales:
-    build: ./sales
-    ports:
-      - "3000:3000"
-    environment:
-      - PORT=3000
-    command: bun start
   appointments:
     build: ./appointments
     ports:
-      - "4000:4000"
+      - "3001:3001"
     command: npm run start:prod
   customers:
     build: ./customers
     ports:
-      - "5000:5000"
+      - "3002:3002"
     command: npm run start:prod
+  sales:
+    build: ./sales
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+    command: bun start

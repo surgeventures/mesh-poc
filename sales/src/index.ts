@@ -3,7 +3,7 @@ import { schema } from "./schema";
 
 const yoga = createYoga({ schema });
 
-const server = Bun.serve({ fetch: yoga });
+const server = Bun.serve({ fetch: yoga, port: 3003 });
 
 console.info(
   `Server is running on ${new URL(
