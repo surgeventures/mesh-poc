@@ -6,6 +6,9 @@ sources:
       openapi:
         endpoint: http://localhost:3001/
         source: http://localhost:3001/api-json
+    transforms:
+      - prefix:
+          mode: bare
   - name: Customers
     handler:
       grpc:

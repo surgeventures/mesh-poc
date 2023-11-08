@@ -1,23 +1,21 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { ApiOkResponse, ApiProperty } from '@nestjs/swagger';
-
-class Hello {
-  @ApiProperty()
-  message: string;
-}
+import { ApiOkResponse } from '@nestjs/swagger';
+import { AppointmentsResponseDto } from './AppointmentsResponse.dto';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('hello')
+  @Get('appointments')
   @ApiOkResponse({
     status: 200,
-    description: 'Greets people',
-    type: Hello,
+    description: 'Returns appointments',
+    type: AppointmentsResponseDto,
   })
-  getHello() {
-    return this.appService.getHello();
+  getAppointments(): AppointmentsResponseDto {
+    return {
+      data: this.appService.getAppointments(),
+    };
   }
 }
