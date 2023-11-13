@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx mesh build --dir ./docker",
+    "build": "npx mesh build",
     "start": "npx mesh start",
     "dev": "npx mesh dev"
   },

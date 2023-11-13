@@ -1,0 +1,9 @@
+query MyQuery {
+  AppController_getAppointments {
+    data {
+      price {
+        value
+      }
+    }
+  }
+}
