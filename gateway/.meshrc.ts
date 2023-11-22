@@ -1,6 +1,6 @@
 import { YamlConfig } from "@graphql-mesh/types";
 
-const a: YamlConfig.Config = {
+const config: YamlConfig.Config = {
   serve: {
     port: 3000,
   },
@@ -58,9 +58,4 @@ const a: YamlConfig.Config = {
   documents: ["./documents/*.graphql"],
 };
 
-// const b = {
-//   sources: [Appointments],
-//   additionalTypeDefs: [generateTypeDefs(Appointments)],
-// };
-
-export default a;
+export default config;
