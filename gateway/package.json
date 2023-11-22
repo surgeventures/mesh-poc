@@ -15,7 +15,12 @@
     "@graphql-mesh/graphql": "^0.96.0",
     "@graphql-mesh/grpc": "^0.97.0",
     "@graphql-mesh/openapi": "^0.96.0",
+    "@graphql-mesh/runtime": "0.97.1",
     "@graphql-mesh/transform-prefix": "^0.96.0",
+    "@graphql-mesh/types": "0.96.0",
     "graphql": "^16.8.1"
+  },
+  "devDependencies": {
+    "prettier": "3.1.0"
   }
 }
