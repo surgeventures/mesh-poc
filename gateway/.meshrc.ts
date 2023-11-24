@@ -42,19 +42,10 @@ const config: YamlConfig.Config = {
   ],
   additionalTypeDefs: `
     extend type Appointments_Appointment {
-      customer: customers__Customer @resolveTo(
-        sourceName: "Customers",                                
-        sourceTypeName: "Query",                               
-        sourceFieldName: "customers_CustomersService_FindOneByAppointmentId",
-        requiredSelectionSet: "{ id }", # This does not seem to be doing anything              
-        sourceArgs: {                                         
-          input: {
-            appointmentId: "{root.id}"
-          }
-        }
-    )
+      customer: customers__Customer
     }
   `,
+  additionalResolvers: ["./services/appointments/appointmentsResolver.ts"],
   documents: ["./documents/*.graphql"],
 };
 
