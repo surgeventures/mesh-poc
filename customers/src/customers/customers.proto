@@ -5,10 +5,15 @@ package customers;
 
 service CustomersService {
   rpc FindOne (CustomerById) returns (Customer) {}
+  rpc FindOneByAppointmentId (CustomerByAppointmentId) returns (Customer) {}
 }
 
 message CustomerById {
   int32 id = 1;
+}
+
+message CustomerByAppointmentId {
+  int32 appointmentId = 1;
 }
 
 message Customer {

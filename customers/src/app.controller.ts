@@ -6,10 +6,19 @@ interface CustomerById {
   id: number;
 }
 
+interface CustomerByAppointmentId {
+  appointmentId: number;
+}
+
 interface Customer {
   id: number;
   name: string;
 }
+
+const customersDB = [
+  { id: 1, name: 'John', appointments: [1, 2] },
+  { id: 2, name: 'Doe', appointments: [3, 4] },
+];
 
 @Controller()
 export class AppController {
@@ -26,10 +35,17 @@ export class AppController {
     // metadata: Metadata,
     // call: ServerUnaryCall<any, any>,
   ): Customer {
-    const customers = [
-      { id: 1, name: 'John' },
-      { id: 2, name: 'Doe' },
-    ];
-    return customers.find(({ id }) => id === data.id);
+    return customersDB.find(({ id }) => id === data.id);
+  }
+
+  @GrpcMethod('CustomersService', 'FindOneByAppointmentId')
+  findOneByAppointmentId(
+    data: CustomerByAppointmentId,
+    // metadata: Metadata,
+    // call: ServerUnaryCall<any, any>,
+  ): Customer {
+    return customersDB.find(({ appointments }) =>
+      appointments.includes(data.appointmentId),
+    );
   }
 }
