@@ -46,7 +46,7 @@ const config: YamlConfig.Config = {
     }
   `,
   additionalResolvers: ["./services/appointments/appointmentsResolver.ts"],
-  documents: ["./documents/*.graphql"],
+  documents: ["../fresha/app/**/*.tsx"],
 };
 
 export default config;
