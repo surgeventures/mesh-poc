@@ -63,14 +63,6 @@ export type Price = {
 
 export type Query = {
   __typename?: 'Query';
-  /**
-   *
-   * >**Method**: `GET`
-   * >**Base URL**: `http://localhost:3001/`
-   * >**Path**: `/appointments`
-   *
-   *
-   */
   AppController_getAppointments?: Maybe<Appointments_AppointmentsResponseDto>;
   customers_CustomersService_FindOne?: Maybe<Customers__Customer>;
   customers_CustomersService_FindOneByAppointmentId?: Maybe<Customers__Customer>;
@@ -113,10 +105,10 @@ export type Customers__CustomerById_Input = {
   id?: InputMaybe<Scalars['Int']['input']>;
 };
 
-export type AppointmentsssQueryVariables = Exact<{ [key: string]: never; }>;
+export type AppointmentsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AppointmentsssQuery = { __typename?: 'Query', AppController_getAppointments?: { __typename?: 'Appointments_AppointmentsResponseDto', data: Array<{ __typename?: 'Appointments_Appointment', id: number, customer?: { __typename?: 'customers__Customer', name?: string | null } | null, price: { __typename?: 'Appointments_Price', currency: string, value: number } } | null> } | null };
+export type AppointmentsQuery = { __typename?: 'Query', AppController_getAppointments?: { __typename?: 'Appointments_AppointmentsResponseDto', data: Array<{ __typename?: 'Appointments_Appointment', id: number, customer?: { __typename?: 'customers__Customer', name?: string | null } | null, price: { __typename?: 'Appointments_Price', currency: string, value: number } } | null> } | null };
 
 
-export const AppointmentsssDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"appointmentsss"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"AppController_getAppointments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"customer"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currency"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]}}]}}]} as unknown as DocumentNode<AppointmentsssQuery, AppointmentsssQueryVariables>;
+export const AppointmentsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"appointments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"AppController_getAppointments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"customer"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"price"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currency"}},{"kind":"Field","name":{"kind":"Name","value":"value"}}]}}]}}]}}]}}]} as unknown as DocumentNode<AppointmentsQuery, AppointmentsQueryVariables>;

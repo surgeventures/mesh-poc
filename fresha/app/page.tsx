@@ -20,7 +20,7 @@ const makeClient = () => {
 const { getClient } = registerUrql(makeClient);
 
 const appointmentsQuery = graphql(/* GraphQL */ `
-  query appointmentsss {
+  query appointments {
     AppController_getAppointments {
       data {
         customer {
