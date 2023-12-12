@@ -6,6 +6,7 @@ class Price {
 class Appointment {
   id: number;
   price: Price;
+  customerId: number
 }
 export class AppointmentsResponseDto {
   data: Appointment[];

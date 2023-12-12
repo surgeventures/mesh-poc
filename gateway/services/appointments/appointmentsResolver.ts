@@ -1,22 +1,34 @@
-import { Resolvers } from "../../.mesh";
+import { print } from "graphql";
+import { Resolvers, Query } from "../../.mesh";
 
 const appointmentsResolver: Resolvers = {
   Appointments_Appointment: {
     customer: {
-      selectionSet: `{ idz }`, // this doesn't seem to do anything
+      selectionSet: `{ customerId }`,
       resolve: async (root, args, context, info) =>
-        context.Customers.Query.customers_CustomersService_FindOneByAppointmentId(
-          {
-            root,
-            context,
-            info,
-            args: {
+        context.Customers.Query.customers_CustomersService_FindMany({
+          root,
+          context,
+          info,
+          argsFromKeys: (keys: number[]) => {
+            return {
               input: {
-                appointmentId: root.id,
+                ids: keys,
               },
-            },
+            };
           },
-        ),
+          valuesFromResults: (
+            values: Query["customers_CustomersService_FindMany"],
+          ) => {
+            return values.customers;
+          },
+          key: root.customerId,
+          selectionSet: (userSelectionSet) => /* GraphQL */ `
+              {
+                  customers ${print(userSelectionSet)}
+              }
+          `,
+        }),
     },
   },
 };
