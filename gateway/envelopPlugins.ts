@@ -2,7 +2,6 @@ import { Plugin } from "@envelop/core";
 import tracer from "dd-trace";
 import { useOnResolve } from "@envelop/on-resolve";
 import { print } from "graphql";
-import { inspect } from "util";
 
 tracer.init();
 
