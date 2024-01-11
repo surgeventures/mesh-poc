@@ -45,6 +45,7 @@ const config: YamlConfig.Config = {
       customer: customers__Customer
     }
   `,
+  additionalEnvelopPlugins: "./envelopPlugins.ts",
   additionalResolvers: ["./services/appointments/appointmentsResolver.ts"],
   documents: ["./documents/*.graphql"],
 };
