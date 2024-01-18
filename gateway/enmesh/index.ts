@@ -4,10 +4,9 @@ import {
   AdditionalStitchingResolverObject,
   AdditionalSubscriptionObject,
 } from "@graphql-mesh/types/typings/config";
-import { ResolversParentTypes, Query } from "../.mesh";
+import { ResolversParentTypes, Query, MeshContext } from "../.mesh";
 
 type ServiceDescription = YamlConfig.Source;
-// TODO create a typed version, now all fields are just strings
 type additionalResolver =
   | AdditionalStitchingResolverObject
   | AdditionalStitchingBatchResolverObject
@@ -16,24 +15,34 @@ type additionalResolver =
 type TypeName = {
   typeName: string;
 };
+type QueryType = "Query" | "Mutation" | "Subscription";
+
+type StrictResolverTypes = {
+  sourceName: keyof MeshContext;
+  sourceTypeName: QueryType;
+  sourceFieldName: keyof Query;
+};
 
 type SingleResolver = Omit<
   AdditionalStitchingResolverObject,
   "targetTypeName" | "targetFieldName"
 > &
-  TypeName & { sourceFieldName: keyof Query };
+  TypeName &
+  StrictResolverTypes;
 
 type BatchedResolver = Omit<
   AdditionalStitchingBatchResolverObject,
   "targetTypeName" | "targetFieldName"
 > &
-  TypeName & { sourceFieldName: keyof Query };
+  TypeName &
+  StrictResolverTypes;
 
 type SubscriptionResolver = Omit<
   AdditionalSubscriptionObject,
   "targetTypeName" | "targetFieldName"
 > &
-  TypeName & { sourceFieldName: keyof Query };
+  TypeName &
+  StrictResolverTypes;
 
 type AnyResolver = SingleResolver | BatchedResolver | SubscriptionResolver;
 
