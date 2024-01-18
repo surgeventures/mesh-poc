@@ -4,8 +4,6 @@ import { useOnResolve } from "@envelop/on-resolve";
 import { print } from "graphql";
 import { MeshPlugin } from "@graphql-mesh/types";
 
-tracer.init();
-
 function useDatadog(): Plugin & MeshPlugin<any> {
   return {
     onPluginInit({ addPlugin }) {
