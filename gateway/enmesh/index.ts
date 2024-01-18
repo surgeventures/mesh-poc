@@ -4,7 +4,7 @@ import {
   AdditionalStitchingResolverObject,
   AdditionalSubscriptionObject,
 } from "@graphql-mesh/types/typings/config";
-import { ResolversParentTypes, Query, MeshContext } from "../.mesh";
+import { Query, MeshContext, Resolvers } from "../.mesh";
 
 type ServiceDescription = YamlConfig.Source;
 type AdditionalResolver =
@@ -12,12 +12,10 @@ type AdditionalResolver =
   | AdditionalStitchingBatchResolverObject
   | AdditionalSubscriptionObject;
 
-type TypeName = {
-  typeName: string;
-};
 type QueryType = "Query" | "Mutation" | "Subscription";
 
 type StrictResolverTypes = {
+  typeName: keyof Resolvers;
   sourceName: keyof MeshContext;
   sourceTypeName: QueryType;
   sourceFieldName: keyof Query;
@@ -27,21 +25,18 @@ type SingleResolver = Omit<
   AdditionalStitchingResolverObject,
   "targetTypeName" | "targetFieldName"
 > &
-  TypeName &
   StrictResolverTypes;
 
 type BatchedResolver = Omit<
   AdditionalStitchingBatchResolverObject,
   "targetTypeName" | "targetFieldName"
 > &
-  TypeName &
   StrictResolverTypes;
 
 type SubscriptionResolver = Omit<
   AdditionalSubscriptionObject,
   "targetTypeName" | "targetFieldName"
 > &
-  TypeName &
   StrictResolverTypes;
 
 type AnyResolver = SingleResolver | BatchedResolver | SubscriptionResolver;
@@ -66,7 +61,7 @@ export const exposeSubscription = (
 ): AdditionalSubscriptionObject => definition;
 
 export const connect = (
-  targetTypeName: keyof ResolversParentTypes,
+  targetTypeName: keyof Resolvers,
   targetFieldName: string,
   fieldResolver: AnyResolver,
 ): Connection => {
