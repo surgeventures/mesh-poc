@@ -7,7 +7,7 @@ import {
 import { ResolversParentTypes, Query, MeshContext } from "../.mesh";
 
 type ServiceDescription = YamlConfig.Source;
-type additionalResolver =
+type AdditionalResolver =
   | AdditionalStitchingResolverObject
   | AdditionalStitchingBatchResolverObject
   | AdditionalSubscriptionObject;
@@ -47,7 +47,7 @@ type SubscriptionResolver = Omit<
 type AnyResolver = SingleResolver | BatchedResolver | SubscriptionResolver;
 
 type Connection = {
-  additionalResolvers: additionalResolver;
+  additionalResolvers: AdditionalResolver;
   additionalTypeDefs: string;
 };
 
