@@ -49,16 +49,15 @@ type Connection = {
 export const describe = (source: YamlConfig.Source): ServiceDescription =>
   source;
 
-export const expose = (
-  definition: AdditionalStitchingResolverObject,
-): AdditionalStitchingResolverObject => definition;
+export const expose = (definition: SingleResolver): SingleResolver =>
+  definition;
 
 export const exposeBatch = (definition: BatchedResolver): BatchedResolver =>
   definition;
 
 export const exposeSubscription = (
-  definition: AdditionalSubscriptionObject,
-): AdditionalSubscriptionObject => definition;
+  definition: SubscriptionResolver,
+): SubscriptionResolver => definition;
 
 export const connect = (
   targetTypeName: keyof Resolvers,
