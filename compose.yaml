@@ -21,13 +21,25 @@ services:
     ports:
       - "3001:3001"
     command: npm run start:prod
+    environment:
+      - DD_AGENT_HOST=datadog
+      - DD_TRACE_AGENT_PORT=8126
+      - DD_SERVICE=appointments
   customers:
     build: ./customers
     ports:
       - "3002:3002"
     command: npm run start:prod
+    environment:
+      - DD_AGENT_HOST=datadog
+      - DD_TRACE_AGENT_PORT=8126
+      - DD_SERVICE=customers
   sales:
     build: ./sales
     ports:
       - "3003:3003"
     command: npm run start
+    environment:
+      - DD_AGENT_HOST=datadog
+      - DD_TRACE_AGENT_PORT=8126
+      - DD_SERVICE=sales

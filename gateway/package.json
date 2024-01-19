@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "npx mesh build",
-    "start": "npx mesh start",
-    "dev": "npx mesh dev"
+    "start": "node -r ./tracer.js node_modules/.bin/mesh start",
+    "dev": "node -r ./tracer.js node_modules/.bin/mesh dev"
   },
   "author": "",
   "license": "ISC",

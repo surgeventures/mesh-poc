@@ -2,10 +2,9 @@ import { Plugin } from "@envelop/core";
 import tracer from "dd-trace";
 import { useOnResolve } from "@envelop/on-resolve";
 import { print } from "graphql";
+import { MeshPlugin } from "@graphql-mesh/types";
 
-tracer.init();
-
-function useDatadog(): Plugin {
+function useDatadog(): Plugin & MeshPlugin<any> {
   return {
     onPluginInit({ addPlugin }) {
       addPlugin(
@@ -28,6 +27,15 @@ function useDatadog(): Plugin {
         executeFn
       );
       setExecuteFn(instrumentedExecute);
+    },
+    onFetch({ options }) {
+      console.log({ options });
+      const currentSpan = tracer.scope().active();
+
+      if (currentSpan) {
+        options.headers ||= {};
+        tracer.inject(currentSpan, "http_headers", options.headers);
+      }
     },
   };
 }
