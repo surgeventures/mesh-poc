@@ -6,7 +6,6 @@ export const customersBatched = exposeBatch({
   sourceName: "Customers",
   sourceTypeName: "Query",
   sourceFieldName: "customers_CustomersService_FindMany",
-  requiredSelectionSet: `{ customerId }`,
   keyField: "customerId",
   keysArg: "input.ids",
   additionalArgs: {},
