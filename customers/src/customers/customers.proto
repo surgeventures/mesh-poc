@@ -5,18 +5,22 @@ package customers;
 
 service CustomersService {
   rpc FindOne (CustomerById) returns (Customer) {}
-  rpc FindOneByAppointmentId (CustomerByAppointmentId) returns (Customer) {}
+  rpc FindMany (CustomerByIds) returns (Customers) {}
 }
 
 message CustomerById {
   int32 id = 1;
 }
 
-message CustomerByAppointmentId {
-  int32 appointmentId = 1;
+message CustomerByIds {
+  repeated int32 ids = 1;
 }
 
 message Customer {
   int32 id = 1;
   string name = 2;
+}
+
+message Customers {
+    repeated Customer customers = 1;
 }

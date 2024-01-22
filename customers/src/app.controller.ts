@@ -6,8 +6,8 @@ interface CustomerById {
   id: number;
 }
 
-interface CustomerByAppointmentId {
-  appointmentId: number;
+interface CustomerByIds {
+  ids: number[];
 }
 
 interface Customer {
@@ -38,14 +38,12 @@ export class AppController {
     return customersDB.find(({ id }) => id === data.id);
   }
 
-  @GrpcMethod('CustomersService', 'FindOneByAppointmentId')
-  findOneByAppointmentId(
-    data: CustomerByAppointmentId,
+  @GrpcMethod('CustomersService', 'FindMany')
+  findMany(
+    data: CustomerByIds,
     // metadata: Metadata,
     // call: ServerUnaryCall<any, any>,
-  ): Customer {
-    return customersDB.find(({ appointments }) =>
-      appointments.includes(data.appointmentId),
-    );
+  ): { customers: Customer[] } {
+    return { customers: customersDB.filter(({ id }) => data.ids.includes(id)) };
   }
 }
