@@ -17,6 +17,7 @@ const config: YamlConfig.Config = {
   },
   documents: ["../fresha/app/**/*.tsx"],
   ...enmesh,
+  additionalEnvelopPlugins: "./envelopPlugins.ts",
   codegen: {
     useIndexSignature: false,
   },
