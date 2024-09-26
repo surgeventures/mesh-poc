@@ -1,6 +1,6 @@
-# Mesh PoC
+# Mesh v1 PoC
 
-This repository represents a proof-of-concept for [Mesh](https://the-guild.dev/graphql/mesh) as a GraphQL gateway to all of our microservices.
+This repository represents a proof-of-concept for the upgrade to [Mesh v1](https://the-guild.dev/graphql/mesh) from the existing v0 we're using.
 
 ## Structure
 
@@ -10,22 +10,6 @@ This repo consists of three dummy apps:
 - _Customers_ - exposes a gRPC interface
 - _Sales_ - exposes a GraphQL interface
 
-The fourth directory - `gateway` - contains the Mesh gateway setup. Check the `.meshrc.yaml` file for details.
-
 ## Setup
 
-Start up the dependencies:
-
-```
-docker compose up -d
-```
-
-Then run the gateway in dev mode:
-
-```
-cd gateway
-npm install
-npx mesh dev
-```
-
-This will open Mesh on [http://localhost:3000/graphql](http://localhost:3000/graphql) with all sub-schemas loaded.
+TBD
