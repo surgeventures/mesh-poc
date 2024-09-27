@@ -1,20 +1,12 @@
-import 'dd-trace/init';
-import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { AppModule } from './app.module';
+import "dd-trace/init";
+import { createServer } from "node:http";
+import { createYoga } from "graphql-yoga";
+import { schema } from "./schema";
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+const yoga = createYoga({ schema });
 
-  const config = new DocumentBuilder()
-    .setTitle('Appointments')
-    .setDescription('Manage appointments')
-    .setVersion('1.0')
-    .build();
+const server = createServer(yoga);
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-
-  await app.listen(3001);
-}
-bootstrap();
+server.listen(3001, () => {
+  console.info("Server is running on http://localhost:3001/graphql");
+});

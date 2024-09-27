@@ -1,22 +1,12 @@
-import 'dd-trace/init';
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { join } from 'path';
+import "dd-trace/init";
+import { createServer } from "node:http";
+import { createYoga } from "graphql-yoga";
+import { schema } from "./schema";
 
-async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
-    {
-      transport: Transport.GRPC,
-      options: {
-        package: 'customers',
-        protoPath: join(__dirname, 'customers/customers.proto'),
-        url: '0.0.0.0:3002',
-      },
-    },
-  );
+const yoga = createYoga({ schema });
 
-  await app.listen();
-}
-bootstrap();
+const server = createServer(yoga);
+
+server.listen(3002, () => {
+  console.info("Server is running on http://localhost:3002/graphql");
+});
