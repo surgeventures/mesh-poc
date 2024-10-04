@@ -31,3 +31,9 @@ asdf install
 npm i
 npx hive-gateway supergraph
 ```
+
+If you change the upstream services' schemas, you will need to rebuild the composed schema:
+
+```
+npx mesh-compose > supergraph.graphql
+```
