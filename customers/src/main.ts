@@ -1,9 +1,17 @@
 import "dd-trace/init";
 import { createServer } from "node:http";
-import { createYoga } from "graphql-yoga";
+import { createYoga, type Plugin } from "graphql-yoga";
 import { schema } from "./schema";
 
-const yoga = createYoga({ schema });
+function useDebug(): Plugin {
+  return {
+    onParse: ({ context }) => {
+      console.debug(context.params);
+    },
+  };
+}
+
+const yoga = createYoga({ schema, logging: "debug", plugins: [useDebug()] });
 
 const server = createServer(yoga);
 

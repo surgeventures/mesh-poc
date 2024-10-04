@@ -1,25 +1,22 @@
 import { createSchema } from "graphql-yoga";
+import { faker } from "@faker-js/faker";
 
-const appointments = [
-  {
-    id: "1",
-    customerId: "1",
-    startsAt: "2021-01-01T10:00:00Z",
-    endsAt: "2021-01-01T10:30:00Z",
-  },
-  {
-    id: "2",
-    customerId: "2",
-    startsAt: "2021-01-01T11:00:00Z",
-    endsAt: "2021-01-01T11:30:00Z",
-  },
-  {
-    id: "3",
-    customerId: "2",
-    startsAt: "2021-01-01T12:00:00Z",
-    endsAt: "2021-01-01T12:30:00Z",
-  },
-];
+type Appointment = {
+  id: string;
+  customerId: string;
+  startsAt: string;
+  endsAt: string;
+};
+
+const appointments = faker.helpers.multiple<Appointment>(
+  (_, index) => ({
+    id: `${index + 1}`,
+    customerId: `${faker.helpers.rangeToNumber({ min: 1, max: 1000 })}`,
+    startsAt: faker.date.recent().toISOString(),
+    endsAt: faker.date.recent().toISOString(),
+  }),
+  { count: 1000 }
+);
 
 export const schema = createSchema({
   typeDefs: /* GraphQL */ `
@@ -31,12 +28,12 @@ export const schema = createSchema({
     }
 
     type Query {
-      appointments: [Appointment!]!
+      appointments(first: Int!): [Appointment!]!
     }
   `,
   resolvers: {
     Query: {
-      appointments: () => appointments,
+      appointments: (_root, { first }) => appointments.slice(0, first),
     },
   },
 });

@@ -1,0 +1,83 @@
+schema @link(url: "https://specs.apollo.dev/link/v1.0") @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION) @link(url: "https://the-guild.dev/graphql/mesh/spec/v1.0", import: ["@transport", "@extraSchemaDefinitionDirective", "@merge"]) {
+  query: Query
+}
+
+directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
+
+directive @join__field(graph: join__Graph, requires: join__FieldSet, provides: join__FieldSet, type: String, external: Boolean, override: String, usedOverridden: Boolean) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+
+directive @join__implements(graph: join__Graph!, interface: String!) repeatable on OBJECT | INTERFACE
+
+directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boolean! = false, resolvable: Boolean! = true, isInterfaceObject: Boolean! = false) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+
+directive @join__unionMember(graph: join__Graph!, member: String!) repeatable on UNION
+
+directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+
+directive @transport(kind: String!, subgraph: String!, location: String!, headers: [[String]], options: TransportOptions) repeatable on SCHEMA
+
+directive @extraSchemaDefinitionDirective(directives: _DirectiveExtensions) repeatable on OBJECT
+
+directive @merge(subgraph: String, argsExpr: String, keyArg: String, keyField: String, key: [String!], additionalArgs: String) repeatable on FIELD_DEFINITION
+
+directive @additionalField on FIELD_DEFINITION
+
+scalar join__FieldSet
+
+scalar link__Import
+
+enum link__Purpose {
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+  """
+  `EXECUTION` features provide metadata necessary for operation execution.
+  """
+  EXECUTION
+}
+
+enum join__Graph {
+  APPOINTMENTS @join__graph(name: "Appointments", url: "http://localhost:3001/graphql")
+  CUSTOMERS @join__graph(name: "Customers", url: "http://localhost:3002/graphql")
+  SALES @join__graph(name: "Sales", url: "http://localhost:3003/graphql")
+}
+
+scalar TransportOptions @join__type(graph: APPOINTMENTS) @join__type(graph: CUSTOMERS) @join__type(graph: SALES)
+
+scalar _DirectiveExtensions @join__type(graph: APPOINTMENTS) @join__type(graph: CUSTOMERS) @join__type(graph: SALES)
+
+type Appointment @join__type(graph: APPOINTMENTS) {
+  id: ID!
+  customerId: ID!
+  startsAt: String!
+  endsAt: String!
+  customer: Customer! @resolveTo(sourceName: "Customers", sourceTypeName: "Query", sourceFieldName: "customerById", requiredSelectionSet: "{ customerId }", sourceArgs: {id: "{root.customerId}"}) @additionalField
+  sales: [Sale!]! @resolveTo(sourceName: "Sales", sourceTypeName: "Query", sourceFieldName: "salesByAppointmentId", requiredSelectionSet: "{ id }", sourceArgs: {appointmentId: "{root.id}"}) @additionalField
+}
+
+type Query @extraSchemaDefinitionDirective(directives: {transport: [{kind: "http", subgraph: "Appointments", location: "http://localhost:3001/graphql", options: {}}]}) @extraSchemaDefinitionDirective(directives: {transport: [{kind: "http", subgraph: "Customers", location: "http://localhost:3002/graphql", options: {}}]}) @extraSchemaDefinitionDirective(directives: {transport: [{kind: "http", subgraph: "Sales", location: "http://localhost:3003/graphql", options: {}}]}) @join__type(graph: APPOINTMENTS) @join__type(graph: CUSTOMERS) @join__type(graph: SALES) {
+  appointments(first: Int!): [Appointment!]! @join__field(graph: APPOINTMENTS)
+  customers(first: Int!): [Customer!]! @join__field(graph: CUSTOMERS)
+  customerById(id: ID!): Customer @merge(subgraph: "Customers", keyField: "id", keyArg: "id") @join__field(graph: CUSTOMERS)
+  sales(first: Int!): [Sale!]! @join__field(graph: SALES)
+  salesByAppointmentId(appointmentId: ID!): [Sale!]! @join__field(graph: SALES)
+}
+
+type Customer @join__type(graph: CUSTOMERS, key: "id") {
+  id: ID!
+  name: String!
+  email: String!
+}
+
+type Price @join__type(graph: SALES) {
+  value: Float!
+  currency: String!
+}
+
+type Sale @join__type(graph: SALES) {
+  id: ID!
+  price: Price!
+}

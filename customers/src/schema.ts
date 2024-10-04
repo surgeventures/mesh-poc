@@ -1,4 +1,5 @@
 import { createSchema } from "graphql-yoga";
+import { faker } from "@faker-js/faker";
 
 type Customer = {
   id: string;
@@ -6,18 +7,14 @@ type Customer = {
   email: string;
 };
 
-const customers: Customer[] = [
-  {
-    id: "1",
-    name: "John Doe",
-    email: "john.doe@example.com",
-  },
-  {
-    id: "2",
-    name: "Jane Doe",
-    email: "jane.doe@example.com",
-  },
-];
+const customers = faker.helpers.multiple<Customer>(
+  (_, index) => ({
+    id: `${index + 1}`,
+    name: faker.person.fullName(),
+    email: faker.internet.email(),
+  }),
+  { count: 1000 }
+);
 
 const customersMap: Map<string, Customer> = customers.reduce(
   (acc, customer) => {
@@ -36,15 +33,15 @@ export const schema = createSchema({
     }
 
     type Query {
-      customers: [Customer!]!
-      customersByIds(ids: [ID!]!): [Customer]!
+      customers(first: Int!): [Customer!]!
+      customerById(id: ID!): Customer
     }
   `,
   resolvers: {
     Query: {
-      customers: () => customers,
-      customersByIds: (_root, { ids }: { ids: string[] }) => {
-        return ids.map((id) => customersMap.get(id));
+      customers: (_root, { first }) => customers.slice(0, first),
+      customerById: (_root, { id }) => {
+        return customersMap.get(id);
       },
     },
   },
