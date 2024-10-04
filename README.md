@@ -12,4 +12,22 @@ This repo consists of three dummy apps:
 
 ## Setup
 
-TBD
+Make sure you have:
+
+- ASDF
+- Docker and Docker Compose
+
+First, run the subgraph services:
+
+```
+docker compose up -d
+```
+
+Then, run the gateway:
+
+```
+cd gateway
+asdf install
+npm i
+npx hive-gateway supergraph
+```
