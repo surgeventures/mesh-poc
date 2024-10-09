@@ -5,6 +5,9 @@ services:
       - DD_API_KEY=${DD_API_KEY}
       - DD_ENV=${USER}-local
       - DD_DOGSTATSD_SOCKET=/var/run/dogstatsd/dogstatsd.sock
+      - DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_GRPC_ENDPOINT=0.0.0.0:4317
+      - DD_LOGS_ENABLED=true
+      - DD_OTLP_CONFIG_LOGS_ENABLED=true
     volumes:
       - /var/run/dogstatsd:/var/run/dogstatsd
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -13,6 +16,7 @@ services:
     ports:
       - "8126:8126"
       - "8125:8125/udp"
+      - "4317:4317"
 
   appointments:
     build: ./appointments
