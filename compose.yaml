@@ -45,3 +45,14 @@ services:
       - DD_AGENT_HOST=datadog
       - DD_TRACE_AGENT_PORT=8126
       - DD_SERVICE=sales
+  auth:
+    build: ./auth
+    ports:
+      - "3004:3004"
+    command: npm run start
+    environment:
+      - DD_AGENT_HOST=datadog
+      - DD_TRACE_AGENT_PORT=8126
+      - DD_SERVICE=auth
+    volumes:
+      - ./auth/keys.json:/app/keys.json
