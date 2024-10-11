@@ -19,6 +19,7 @@ export const gatewayConfig = defineConfig({
   },
   graphiql: {
     subscriptionsProtocol: "WS",
+    title: "API Gateway",
   },
   batching: {
     limit: 5,

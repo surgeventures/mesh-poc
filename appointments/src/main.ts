@@ -20,6 +20,7 @@ const yoga = createYoga({
   plugins: [useDebug()],
   graphiql: {
     subscriptionsProtocol: "WS",
+    title: "Appointments API",
   },
 });
 

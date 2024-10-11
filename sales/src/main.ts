@@ -12,7 +12,12 @@ function useDebug(): Plugin {
   };
 }
 
-const yoga = createYoga({ schema, logging: "debug", plugins: [useDebug()] });
+const yoga = createYoga({
+  schema,
+  logging: "debug",
+  plugins: [useDebug()],
+  graphiql: { title: "Sales API" },
+});
 
 const server = createServer(yoga);
 
