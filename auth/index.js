@@ -40,15 +40,37 @@ app.get("/tokens", async (req, res) => {
 
   const opt = { compact: true, jwk: key, fields: { typ: "jwt" } };
 
-  const payload = JSON.stringify({
+  const validPayload = JSON.stringify({
     exp: Math.floor((Date.now() + ms("1d")) / 1000),
     iat: Math.floor(Date.now() / 1000),
-    sub: "test",
+    sub: "valid-token",
   });
 
-  const token = await jose.JWS.createSign(opt, key).update(payload).final();
+  const expiredPayload = JSON.stringify({
+    exp: Math.floor((Date.now() - ms("1d")) / 1000),
+    iat: Math.floor(Date.now() / 1000),
+    sub: "expired-token",
+  });
 
-  res.json({ token });
+  const expiringIn15SecondsPayload = JSON.stringify({
+    exp: Math.floor((Date.now() + ms("15s")) / 1000),
+    iat: Math.floor(Date.now() / 1000),
+    sub: "expiring-in-15s-token",
+  });
+
+  const validToken = await jose.JWS.createSign(opt, key)
+    .update(validPayload)
+    .final();
+
+  const expiredToken = await jose.JWS.createSign(opt, key)
+    .update(expiredPayload)
+    .final();
+
+  const expiringIn15SecondsToken = await jose.JWS.createSign(opt, key)
+    .update(expiringIn15SecondsPayload)
+    .final();
+
+  res.json({ validToken, expiredToken, expiringIn15SecondsToken });
 });
 
 app.listen(port, () => {
