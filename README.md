@@ -27,7 +27,7 @@ docker compose up -d
 
 After they successfully boot up, you should be able to navigate to their GraphiQL interfaces:
 
-- [appointments](http://localhost:3001/gdcraphql)
+- [appointments](http://localhost:3001/graphql)
 - [customers](http://localhost:3002/graphql)
 - [sales](http://localhost:3003/graphql)
 
