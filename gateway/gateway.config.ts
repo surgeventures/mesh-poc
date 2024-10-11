@@ -13,7 +13,7 @@ export const gatewayConfig = defineConfig({
       options: {
         subscriptions: {
           kind: "ws",
-        },
+        } satisfies WSTransportOptions,
       },
     },
   },
