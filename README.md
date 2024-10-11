@@ -4,11 +4,11 @@ This repository represents a proof-of-concept for the upgrade to [Mesh v1](https
 
 ## Structure
 
-This repo consists of three dummy apps:
+This repo consists of three dummy apps (`appointments`, `customers` and `sales`) exposing a GraphQL
+interface - those are our test subschemas / upstream services.
 
-- _Appointments_ - exposes an OpenAPI interface
-- _Customers_ - exposes a gRPC interface
-- _Sales_ - exposes a GraphQL interface
+The `auth` directory contains an authentication service which exposes a JSON Web Key Set and
+generates some tokens to test JWT handling.
 
 ## Setup
 
