@@ -1,5 +1,7 @@
 schema @link(url: "https://specs.apollo.dev/link/v1.0") @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION) @link(url: "https://the-guild.dev/graphql/mesh/spec/v1.0", import: ["@transport", "@extraSchemaDefinitionDirective", "@merge"]) {
   query: Query
+  mutation: Mutation
+  subscription: Subscription
 }
 
 directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
@@ -66,6 +68,14 @@ type Query @extraSchemaDefinitionDirective(directives: {transport: [{kind: "http
   salesByAppointmentId(appointmentId: ID!): [Sale!]! @join__field(graph: SALES)
 }
 
+type Mutation @join__type(graph: APPOINTMENTS) {
+  createAppointment(input: CreateAppointmentInput!): Appointment!
+}
+
+type Subscription @join__type(graph: APPOINTMENTS) {
+  appointmentCreated: Appointment!
+}
+
 type Customer @join__type(graph: CUSTOMERS, key: "id") {
   id: ID!
   name: String!
@@ -80,4 +90,10 @@ type Price @join__type(graph: SALES) {
 type Sale @join__type(graph: SALES) {
   id: ID!
   price: Price!
+}
+
+input CreateAppointmentInput @join__type(graph: APPOINTMENTS) {
+  customerId: ID!
+  startsAt: String!
+  endsAt: String!
 }
