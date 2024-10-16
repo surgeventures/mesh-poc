@@ -1,12 +1,30 @@
 import { inspect } from "node:util";
 import { createPubSub, createSchema, YogaInitialContext } from "graphql-yoga";
 import { faker } from "@faker-js/faker";
+import jwksClient from "jwks-rsa";
+import { verify, GetPublicKeyOrSecret } from "jsonwebtoken";
+import { GraphQLError } from "graphql";
 
 type Appointment = {
   id: string;
   customerId: string;
   startsAt: string;
   endsAt: string;
+};
+
+const client = jwksClient({
+  jwksUri: "http://auth:3004/jwks",
+});
+
+const getKey: GetPublicKeyOrSecret = (header, callback) => {
+  console.log({ kid: header.kid });
+  client.getSigningKey(header.kid, function (err, key) {
+    if (key) {
+      callback(null, key.getPublicKey());
+    } else {
+      callback(new Error("Key not found"));
+    }
+  });
 };
 
 const pubSub = createPubSub();
@@ -67,10 +85,32 @@ export const schema = createSchema({
       appointmentCreated: {
         subscribe: (_root, _args, context, _) => {
           console.debug("Subscribing to appointments");
-          console.log({ context });
+          console.debug({ context });
           return pubSub.subscribe("appointments");
         },
-        resolve: (payload) => payload,
+        resolve: async (payload, _args, context, _info) => {
+          return new Promise((resolve, reject) => {
+            console.debug("Resolving appointmentCreated");
+            const token = context.params.extensions?.jwt?.token?.value;
+
+            if (token) {
+              verify(token, getKey, {}, function (err, _) {
+                if (err) {
+                  reject(
+                    new GraphQLError("Unauthenticated", {
+                      extensions: { code: "UNAUTHENTICATED" },
+                    })
+                  );
+                } else {
+                  resolve(payload);
+                }
+              });
+            } else {
+              console.debug(inspect(context, false, 2, true));
+              resolve(payload);
+            }
+          });
+        },
       },
     },
   },

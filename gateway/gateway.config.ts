@@ -8,19 +8,7 @@ import {
 
 export const gatewayConfig = defineConfig({
   supergraph: "./supergraph.graphql",
-  transportEntries: {
-    "*": {
-      options: {
-        subscriptions: {
-          kind: "ws",
-        } satisfies WSTransportOptions,
-      },
-    },
-  },
-  graphiql: {
-    subscriptionsProtocol: "WS",
-    title: "API Gateway",
-  },
+  graphiql: { title: "API Gateway" },
   batching: {
     limit: 5,
   },
