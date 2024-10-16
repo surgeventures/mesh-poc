@@ -27,9 +27,10 @@ export const composeConfig = defineConfig({
         @resolveTo(
           sourceName: "Customers"
           sourceTypeName: "Query"
-          sourceFieldName: "customerById"
+          sourceFieldName: "customersByIds"
+          keyField: "customerId"
+          keysArg: "ids"
           requiredSelectionSet: "{ customerId }"
-          sourceArgs: { id: "{root.customerId}" }
         )
       sales: [Sale!]!
         @resolveTo(

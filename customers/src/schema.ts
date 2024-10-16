@@ -34,14 +34,19 @@ export const schema = createSchema({
 
     type Query {
       customers(first: Int!): [Customer!]!
-      customerById(id: ID!): Customer
+      customersByIds(ids: [ID]): [Customer]
     }
   `,
   resolvers: {
     Query: {
       customers: (_root, { first }) => customers.slice(0, first),
-      customerById: (_root, { id }) => {
-        return customersMap.get(id);
+      customersByIds: (_root, { ids }) => {
+        if (!ids) return null;
+
+        return ids.map((id: string) => {
+          if (!id) return null;
+          return customersMap.get(id) || null;
+        });
       },
     },
   },
