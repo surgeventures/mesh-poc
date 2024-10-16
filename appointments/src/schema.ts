@@ -1,4 +1,5 @@
 import { inspect } from "node:util";
+import { readFileSync } from "node:fs";
 import { createPubSub, createSchema, YogaInitialContext } from "graphql-yoga";
 import { faker } from "@faker-js/faker";
 import jwksClient from "jwks-rsa";
@@ -27,6 +28,8 @@ const getKey: GetPublicKeyOrSecret = (header, callback) => {
   });
 };
 
+const sdl = readFileSync("./src/schema.graphql", { encoding: "utf-8" });
+
 const pubSub = createPubSub();
 
 const appointments = faker.helpers.multiple<Appointment>(
@@ -40,32 +43,7 @@ const appointments = faker.helpers.multiple<Appointment>(
 );
 
 export const schema = createSchema({
-  typeDefs: /* GraphQL */ `
-    type Appointment {
-      id: ID!
-      customerId: ID!
-      startsAt: String!
-      endsAt: String!
-    }
-
-    input CreateAppointmentInput {
-      customerId: ID!
-      startsAt: String!
-      endsAt: String!
-    }
-
-    type Query {
-      appointments(first: Int!): [Appointment!]!
-    }
-
-    type Mutation {
-      createAppointment(input: CreateAppointmentInput!): Appointment!
-    }
-
-    type Subscription {
-      appointmentCreated: Appointment!
-    }
-  `,
+  typeDefs: sdl,
   resolvers: {
     Query: {
       appointments: (_root, { first }) => appointments.slice(0, first),

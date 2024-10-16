@@ -8,6 +8,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph("Appointments", {
         endpoint: "http://localhost:3001/graphql",
+        source: "../appointments/src/schema.graphql",
       }),
     },
     {

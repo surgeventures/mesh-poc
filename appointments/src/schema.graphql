@@ -1,0 +1,24 @@
+type Appointment {
+  id: ID!
+  customerId: ID!
+  startsAt: String!
+  endsAt: String!
+}
+
+input CreateAppointmentInput {
+  customerId: ID!
+  startsAt: String!
+  endsAt: String!
+}
+
+type Query {
+  appointments(first: Int!): [Appointment!]!
+}
+
+type Mutation {
+  createAppointment(input: CreateAppointmentInput!): Appointment!
+}
+
+type Subscription {
+  appointmentCreated: Appointment!
+}
