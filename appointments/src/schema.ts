@@ -1,6 +1,7 @@
 import { inspect } from "node:util";
 import { readFileSync } from "node:fs";
-import { createPubSub, createSchema, YogaInitialContext } from "graphql-yoga";
+import { setTimeout as setTimeout$ } from "node:timers/promises";
+import { createPubSub, createSchema } from "graphql-yoga";
 import { faker } from "@faker-js/faker";
 import jwksClient from "jwks-rsa";
 import { verify, GetPublicKeyOrSecret } from "jsonwebtoken";
@@ -88,6 +89,20 @@ export const schema = createSchema({
               resolve(payload);
             }
           });
+        },
+      },
+      appointmentUpdated: {
+        subscribe: async function* (_, { id }) {
+          const appointment = appointments.find((a) => a.id === id);
+
+          if (!appointment) throw new GraphQLError("Appointment not found");
+
+          for (let i = 100; i >= 0; i--) {
+            await setTimeout$(1000);
+            appointment.startsAt = faker.date.recent().toISOString();
+            appointment.endsAt = faker.date.recent().toISOString();
+            yield { appointmentUpdated: appointment };
+          }
         },
       },
     },

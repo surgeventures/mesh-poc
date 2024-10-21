@@ -3,7 +3,6 @@ import {
   createRemoteJwksSigningKeyProvider,
   defineConfig,
   extractFromHeader,
-  WSTransportOptions,
 } from "@graphql-hive/gateway";
 
 export const gatewayConfig = defineConfig({
@@ -17,14 +16,15 @@ export const gatewayConfig = defineConfig({
     serviceName: "gateway-poc",
     exporters: [
       createOtlpGrpcExporter({
-        url: "http://0.0.0.0:4317",
+        url:
+          process.env.OPENTELEMETRY_COLLECTOR_ENDPOINT || "http://0.0.0.0:4317",
       }),
     ],
   },
   jwt: {
     singingKeyProviders: [
       createRemoteJwksSigningKeyProvider({
-        jwksUri: "http://localhost:3004/jwks",
+        jwksUri: process.env.JWKS_URI || "http://localhost:3004/jwks",
       }),
     ],
     reject: {

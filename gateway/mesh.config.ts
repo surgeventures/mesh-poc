@@ -7,18 +7,20 @@ export const composeConfig = defineConfig({
   subgraphs: [
     {
       sourceHandler: loadGraphQLHTTPSubgraph("Appointments", {
-        endpoint: "http://localhost:3001/graphql",
-        source: "../appointments/src/schema.graphql",
+        endpoint:
+          process.env.APPOINTMENTS_API_URL || "http://localhost:3001/graphql",
+        source: "./schemas/Appointments.graphql",
       }),
     },
     {
       sourceHandler: loadGraphQLHTTPSubgraph("Customers", {
-        endpoint: "http://localhost:3002/graphql",
+        endpoint:
+          process.env.CUSTOMERS_API_URL || "http://localhost:3002/graphql",
       }),
     },
     {
       sourceHandler: loadGraphQLHTTPSubgraph("Sales", {
-        endpoint: "http://localhost:3003/graphql",
+        endpoint: process.env.SALES_API_URL || "http://localhost:3003/graphql",
       }),
     },
   ],

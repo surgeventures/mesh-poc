@@ -56,3 +56,19 @@ services:
       - DD_SERVICE=auth
     volumes:
       - ./auth/keys.json:/app/keys.json
+  gateway:
+    build: ./gateway
+    ports:
+      - "4000:4000"
+    command: /bin/sh -c "npx mesh-compose > supergraph.graphql && npx hive-gateway supergraph"
+    environment:
+      - OPENTELEMETRY_COLLECTOR_ENDPOINT="http://datadog:4317"
+      - JWKS_URI=http://auth:3004/jwks
+      - APPOINTMENTS_API_URL=http://appointments:3001/graphql
+      - CUSTOMERS_API_URL=http://customers:3002/graphql
+      - SALES_API_URL=http://sales:3003/graphql
+    depends_on:
+      - appointments
+      - customers
+      - sales
+      - auth
