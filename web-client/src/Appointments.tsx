@@ -12,8 +12,28 @@ enum ConnectionState {
   ERROR = "error",
 }
 
-function Appointments(props: { appointmentIds: string[] }) {
-  const { appointmentIds } = props;
+function boxColor(connectionStatus: ConnectionState | undefined | null) {
+  if (!connectionStatus || connectionStatus === ConnectionState.DISCONNECTED) {
+    return "#565656";
+  }
+
+  if (connectionStatus === ConnectionState.CONNECTED) {
+    return "#2d8344";
+  }
+
+  if (connectionStatus === ConnectionState.ERROR) {
+    return "#8f2424";
+  }
+}
+
+type AppointmentsProps = {
+  appointmentIds: string[];
+  title: string;
+  url: string;
+};
+
+function Appointments(props: AppointmentsProps) {
+  const { appointmentIds, title, url } = props;
   const [appointments, setAppointments] = useState<Record<string, Appointment>>(
     {}
   );
@@ -25,17 +45,17 @@ function Appointments(props: { appointmentIds: string[] }) {
     const eventSources: Record<string, EventSource> = {};
 
     appointmentIds.forEach((id) => {
-      const url = new URL("http://localhost:4000/graphql");
+      const urlObject = new URL(url);
 
-      url.searchParams.append(
+      urlObject.searchParams.append(
         "query",
         `subscription MySubscription { appointmentUpdated(id:"${id}"){ id startsAt endsAt } }`
       );
 
-      url.searchParams.append("operationName", "MySubscription");
-      url.searchParams.append("extensions", "{}");
+      urlObject.searchParams.append("operationName", "MySubscription");
+      urlObject.searchParams.append("extensions", "{}");
 
-      const eventSource = new EventSource(url);
+      const eventSource = new EventSource(urlObject);
 
       eventSource.onopen = () => {
         setConnectionStatus((prev) => ({
@@ -82,33 +102,30 @@ function Appointments(props: { appointmentIds: string[] }) {
         es.close();
       });
     };
-  }, [appointmentIds]);
+  }, [appointmentIds, url]);
 
   return (
     <>
-      <h1>Appointments</h1>
+      <h1>{title}</h1>
 
       {appointmentIds.map((id) => {
         const appointment = appointments[id];
-        const connectionStatus = connectionStatuses[id];
+        const connectionStatus = connectionStatuses[id] || "disconnected";
+
         return (
-          <ul key={id}>
+          <ul key={id} style={{ backgroundColor: boxColor(connectionStatus) }}>
             <li>
               <strong>ID:</strong> {id}
             </li>
-            {appointment && connectionStatus && (
-              <>
-                <li>
-                  <strong>Starts at:</strong> {appointment.startsAt}
-                </li>
-                <li>
-                  <strong>Ends at:</strong> {appointment.endsAt}
-                </li>
-                <li>
-                  <strong>Connection status:</strong> {connectionStatus}
-                </li>
-              </>
-            )}
+            <li>
+              <strong>Connection status:</strong> {connectionStatus}
+            </li>
+            <li>
+              <strong>Starts at:</strong> {appointment?.startsAt || "-"}
+            </li>
+            <li>
+              <strong>Ends at:</strong> {appointment?.endsAt || "-"}
+            </li>
           </ul>
         );
       })}
