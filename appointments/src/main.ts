@@ -3,6 +3,16 @@ import { createServer } from "node:http";
 import { inspect } from "node:util";
 import { createYoga, Plugin } from "graphql-yoga";
 import { schema } from "./schema";
+import util from "node:util";
+import { exec as execCallback } from "node:child_process";
+
+const exec = util.promisify(execCallback);
+
+setInterval(async () => {
+  const { stdout, stderr } = await exec("ss -natp");
+  console.log("stdout:", stdout);
+  console.log("stderr:", stderr);
+}, 1000);
 
 function useDebug(): Plugin {
   return {
