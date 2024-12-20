@@ -9,7 +9,7 @@ import { exec as execCallback } from "node:child_process";
 const exec = util.promisify(execCallback);
 
 setInterval(async () => {
-  const { stdout, stderr } = await exec("ss -natp");
+  const { stdout, stderr } = await exec("ss -ntp state established");
   console.log("stdout:", stdout);
   console.log("stderr:", stderr);
 }, 1000);
